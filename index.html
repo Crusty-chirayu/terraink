@@ -227,11 +227,6 @@
       });
     </script>
 
-    <!-- Mediavine ad script — injected by the ads plugin when
-         VITE_MEDIAVINE_SITE_ID is set. Placed ahead of GA4 so its CMP can
-         signal consent before Analytics loads. -->
-    <!-- mediavine-script -->
-
     <!-- GA4 -->
     <script
       async
@@ -248,6 +243,9 @@
       });
     </script>
 
+    <!-- AdSense loader — injected by the adsense plugin when
+         VITE_ADSENSE_AD_CLIENT is set. -->
+    <!-- adsense-script -->
   </head>
   <body>
     <div id="root"></div>

@@ -53,11 +53,7 @@
     display: flex;
     align-items: center;
     position: fixed;
-    /* --ad-adhesion-height keeps the nav above the ad adhesion bar when one
-       is present (see useAdhesionOffset); it is 0 when it isn't. */
-    bottom: calc(
-      14px + env(safe-area-inset-bottom, 0px) + var(--ad-adhesion-height, 0px)
-    );
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
     left: 16px;
     right: 16px;
     z-index: 100;
@@ -65,9 +61,7 @@
   }
 
   html[data-display-mode="standalone"] .mobile-nav-wrapper {
-    bottom: calc(
-      4px + env(safe-area-inset-bottom, 0px) + var(--ad-adhesion-height, 0px)
-    );
+    bottom: calc(4px + env(safe-area-inset-bottom, 0px));
   }
 
   /* Main pill nav */
@@ -424,7 +418,7 @@
   .mobile-export-fab-trigger {
     position: fixed;
     right: 16px;
-    bottom: calc(84px + env(safe-area-inset-bottom, 0px) + var(--ad-adhesion-height, 0px));
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
     z-index: 101;
     width: 60px;
     height: 44px;
@@ -459,7 +453,7 @@
   .mobile-marker-edit-done {
     position: fixed;
     left: 16px;
-    bottom: calc(84px + env(safe-area-inset-bottom, 0px) + var(--ad-adhesion-height, 0px));
+    bottom: calc(84px + env(safe-area-inset-bottom, 0px));
     z-index: 101;
     display: inline-flex;
     align-items: center;
@@ -486,7 +480,7 @@
   }
 
   html[data-display-mode="standalone"] .mobile-marker-edit-done {
-    bottom: calc(74px + env(safe-area-inset-bottom, 0px) + var(--ad-adhesion-height, 0px));
+    bottom: calc(74px + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-export-modal-backdrop {

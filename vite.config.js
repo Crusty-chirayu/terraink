@@ -35,43 +35,41 @@ function getPackageName(id) {
 }
 
 /**
- * Wires up Mediavine: their loader script in index.html, and an ads.txt that
- * 301s to their servers.
+ * Wires up AdSense: the loader script in index.html, and the ads.txt seller
+ * line that authorises Google to sell this site's inventory.
  *
  * The script tag is emitted from here rather than interpolated into the HTML
- * so an unset site ID omits it entirely, instead of leaving a literal
+ * so an unset client ID omits it entirely, instead of leaving a literal
  * %VITE_…% placeholder that the browser would request and 404 on.
- *
- * Mediavine keeps the partner list current on their own servers and asks
- * publishers to redirect /ads.txt there, so we emit a redirect rather than
- * copy a snapshot that would go stale between deploys.
  */
-function mediavinePlugin() {
-  const SCRIPT_MARKER = "<!-- mediavine-script -->";
+function adsensePlugin() {
+  const SCRIPT_MARKER = "<!-- adsense-script -->";
 
   let resolvedConfig;
-  const siteId = () =>
-    String(resolvedConfig.env.VITE_MEDIAVINE_SITE_ID ?? "").trim();
 
   return {
-    name: "mediavine",
+    name: "adsense",
     configResolved(config) {
       resolvedConfig = config;
     },
     transformIndexHtml(html) {
-      const id = siteId();
+      const client = String(
+        resolvedConfig.env.VITE_ADSENSE_AD_CLIENT ?? "",
+      ).trim();
       return html.replace(
         SCRIPT_MARKER,
-        id
-          ? `<script type="text/javascript" async="async" data-noptimize="1" data-cfasync="false" src="//scripts.scriptwrapper.com/tags/${id}.js"></script>`
+        client
+          ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"></script>`
           : "",
       );
     },
     closeBundle() {
-      const id = siteId();
-      if (!id) {
+      const publisherId = String(
+        resolvedConfig.env.VITE_ADSENSE_PUBLISHER_ID ?? "",
+      ).trim();
+      if (!publisherId) {
         console.warn(
-          "[mediavine] VITE_MEDIAVINE_SITE_ID is not set — skipping ads.txt redirect",
+          "[adsense] VITE_ADSENSE_PUBLISHER_ID is not set — skipping ads.txt",
         );
         return;
       }
@@ -79,15 +77,12 @@ function mediavinePlugin() {
         resolvedConfig.root,
         resolvedConfig.build.outDir,
       );
-      // A static file takes precedence over a redirect rule on most hosts,
-      // so make sure nothing shadows it.
-      fs.rmSync(path.join(outDir, "ads.txt"), { force: true });
       fs.writeFileSync(
-        path.join(outDir, "_redirects"),
-        `/ads.txt https://adstxt.journeymv.com/sites/${id}/ads.txt 301\n`,
+        path.join(outDir, "ads.txt"),
+        `google.com, ${publisherId}, DIRECT, f08c47fec0942fa0\n`,
         "utf8",
       );
-      console.log("[mediavine] wrote /ads.txt → 301 redirect");
+      console.log("[adsense] wrote ads.txt");
     },
   };
 }
@@ -159,15 +154,24 @@ ${body}
 
     if (!renderMarkdown) {
       // Imported lazily so a build that skips both docs pays nothing.
-      const [{ unified }, remarkParse, remarkRehype, rehypeStringify] =
-        await Promise.all([
-          import("unified"),
-          import("remark-parse"),
-          import("remark-rehype"),
-          import("rehype-stringify"),
-        ]);
+      const [
+        { unified },
+        remarkParse,
+        remarkBreaks,
+        remarkRehype,
+        rehypeStringify,
+      ] = await Promise.all([
+        import("unified"),
+        import("remark-parse"),
+        import("remark-breaks"),
+        import("remark-rehype"),
+        import("rehype-stringify"),
+      ]);
+      // remark-breaks matches the in-app LegalModal, so single line breaks
+      // (e.g. Purpose / Legal Basis) render the same on both.
       const processor = unified()
         .use(remarkParse.default)
+        .use(remarkBreaks.default)
         .use(remarkRehype.default)
         .use(rehypeStringify.default);
       renderMarkdown = async (markdown) =>
@@ -239,7 +243,7 @@ ${body}
 }
 
 export default defineConfig({
-  plugins: [react(), mediavinePlugin(), legalPagesPlugin()],
+  plugins: [react(), adsensePlugin(), legalPagesPlugin()],
   define: {
     "import.meta.env.VITE_APP_VERSION": JSON.stringify(appVersion),
   },

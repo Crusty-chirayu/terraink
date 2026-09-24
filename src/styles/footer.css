@@ -15,44 +15,6 @@
   color: #9bb3c5;
 }
 
-/* Hosts Mediavine's injected consent button (see useConsentButtonSlot).
-   Their stylesheet is injected at runtime and outranks ours, so these
-   overrides need !important to make the button read as a plain footer link. */
-.footer-consent-slot:has(> *)::before {
-  content: " | ";
-}
-
-/* The wrapper needs the font reset too: `font: inherit` on the button would
-   otherwise inherit the size Mediavine sets on this wrapper. */
-.footer-consent-slot,
-.footer-consent-slot .consumer-privacy {
-  display: inline !important;
-  font: inherit !important;
-  letter-spacing: inherit !important;
-  color: inherit !important;
-}
-
-.footer-consent-slot .consumer-privacy-btn {
-  display: inline !important;
-  width: auto !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  border-radius: 0 !important;
-  background: none !important;
-  box-shadow: none !important;
-  font: inherit !important;
-  line-height: inherit !important;
-  letter-spacing: inherit !important;
-  text-transform: none !important;
-  color: #cbe8ff !important;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-}
-
 .source-link {
   color: #cbe8ff;
   text-decoration: underline;

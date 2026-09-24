@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { useConsentButtonSlot } from "@/shared/hooks/useConsentButtonSlot";
+import { useState } from "react";
 import {
   APP_VERSION,
   CONTACT_EMAIL,
@@ -33,16 +32,24 @@ function handleLegalClick(
   openLegalDoc(doc);
 }
 
+/** Reopens Google's consent dialog so visitors can withdraw or change consent. */
+function handleCookieSettings() {
+  const gfc = (window as any).googlefc;
+  gfc?.callbackQueue?.push({
+    CONSENT_DATA_READY: () => gfc.showRevocationMessage(),
+  });
+}
+
 export default function FooterNote() {
   const appVersion = APP_VERSION;
   const [isAttributionOpen, setIsAttributionOpen] = useState(false);
-  // Mediavine's CMP injects its consent button; host it beside the legal links.
-  const consentSlotRef = useRef<HTMLSpanElement>(null);
-  useConsentButtonSlot(consentSlotRef);
   const contactEmail = String(CONTACT_EMAIL ?? "").trim();
   // These vars hold the raw markdown URLs; the links open the in-app modal.
   const imprintAvailable = Boolean(String(LEGAL_NOTICE_URL ?? "").trim());
   const privacyAvailable = Boolean(String(PRIVACY_URL ?? "").trim());
+  const hasLegalLinks = Boolean(
+    contactEmail || imprintAvailable || privacyAvailable,
+  );
 
   return (
     <footer className="app-footer desktop-footer">
@@ -77,7 +84,17 @@ export default function FooterNote() {
               Data Privacy
             </a>
           )}
-          <span className="footer-consent-slot" ref={consentSlotRef} />
+          {hasLegalLinks && " | "}
+          <button
+            type="button"
+            className="source-link"
+            onClick={() => {
+              trackEvent("cookie_settings_click");
+              handleCookieSettings();
+            }}
+          >
+            Cookie Settings
+          </button>
         </p>
       </div>
 

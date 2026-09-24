@@ -1,0 +1,43 @@
+/* ══════════════════════════════════════════════════════════════
+   Ads — sidebar ad slot styles
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Shared label ── */
+
+.panel-ad-label {
+  margin: 0 0 6px;
+  font-family: "Spline Sans Mono", monospace;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(150, 185, 210, 0.5);
+  text-align: center;
+}
+
+/* Zero-height measuring wrapper — lets AdUnit read the available width
+   before committing an <ins> to the DOM (avoids 0-width ad requests). */
+.ad-unit-measure {
+  width: 100%;
+}
+
+/* ── Ad unit slot ── */
+
+.ad-unit-slot {
+  padding: 12px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* ── Right sidebar slot (desktop right panel) ── */
+
+.ad-unit-slot.sidebar-ad-slot {
+  padding: 12px;
+  background: rgba(10, 20, 31, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(146, 176, 200, 0.2);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+  border-radius: inherit;
+}

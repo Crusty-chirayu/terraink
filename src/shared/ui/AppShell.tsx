@@ -11,7 +11,6 @@ import PreviewPanel from "@/features/poster/ui/PreviewPanel";
 import MobileNavBar, { type MobileTab } from "@/shared/ui/MobileNavBar";
 import InstallPrompt from "@/features/install/ui/InstallPrompt";
 import { useSwipeDown } from "@/shared/hooks/useSwipeDown";
-import { useAdhesionOffset } from "@/shared/hooks/useAdhesionOffset";
 import StartupLocationModal from "@/features/location/ui/StartupLocationModal";
 import { CheckIcon } from "@/shared/ui/Icons";
 import SupportModal from "@/features/export/ui/SupportModal";
@@ -78,8 +77,6 @@ export default function AppShell() {
 
   // Fire once-per-session analytics on load (app_open).
   useSessionAnalytics();
-  // Keep bottom-anchored UI clear of Mediavine's adhesion ad.
-  useAdhesionOffset();
   const { isMarkerEditorActive } = state;
   const activeMarker =
     state.activeMarkerId !== null

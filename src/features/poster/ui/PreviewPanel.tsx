@@ -6,6 +6,8 @@ import {
   type CSSProperties,
 } from "react";
 import { usePosterContext } from "./PosterContext";
+import AdUnit from "@/shared/ui/AdUnit";
+import { AD_SLOT_SIDEBAR, ADS_SIDEBAR_ENABLED } from "@/core/config";
 import { useMapSync } from "@/features/map/application/useMapSync";
 import MapPreview from "@/features/map/ui/MapPreview";
 import MarkerOverlay from "@/features/markers/ui/MarkerOverlay";
@@ -595,6 +597,11 @@ export default function PreviewPanel() {
           posterSize={posterSizeLabel}
           markers={markersLabel}
           coordinates={coordinatesLabel}
+        />
+        <AdUnit
+          slot={AD_SLOT_SIDEBAR}
+          enabled={ADS_SIDEBAR_ENABLED}
+          className="sidebar-ad-slot"
         />
       </div>
     </section>
