@@ -23,7 +23,7 @@
 [![Cloudflare Badge](https://img.shields.io/badge/Cloudflare-F38020?logo=cloudflare&logoColor=fff&style=for-the-badge)](https://www.cloudflare.com)
 [![Docker Badge](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge)](https://www.docker.com)
 
-> Note: Terraink is still in development. Every feedback is appreciated. This is an open-source project, and community contributions are very welcome.
+> Note: Terraink is still in development & Every feedback is appreciated. This is an open-source project, and community contributions are very welcome.
 
 > **License & Trademark Notice:** This project is licensed under AGPL-3.0 and includes trademark protections. See the [License](#license) and [Trademark](#trademark) sections for details.
 
